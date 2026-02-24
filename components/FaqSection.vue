@@ -10,7 +10,7 @@ const faqs = [
   },
   {
     question: 'How should I prepare for my tattoo?',
-    answer: 'Get a good night\'s sleep, eat a proper meal beforehand, stay hydrated, and avoid alcohol for 24 hours before your appointment. Wear comfortable, loose clothing that allows easy access to the area being tattooed.'
+    answer: "Get a good night's sleep, eat a proper meal beforehand, stay hydrated, and avoid alcohol for 24 hours before your appointment. Wear comfortable, loose clothing that allows easy access to the area being tattooed."
   },
   {
     question: 'What aftercare do you provide?',
@@ -42,22 +42,30 @@ const isOpen = (index: number) => openItems.value.has(index)
 <template>
   <section id="faq">
     <div class="container">
-      <div class="section-header">
+      <div class="section-header reveal">
+        <p class="section-label">Questions</p>
         <h2>FAQ</h2>
         <div class="divider"></div>
         <p>Frequently asked questions about our services</p>
       </div>
-      <div class="faq-list">
+
+      <div class="faq-list reveal stagger-children">
         <div
           v-for="(faq, index) in faqs"
           :key="index"
           class="faq-item"
           :class="{ active: isOpen(index) }"
         >
-          <div class="faq-question" @click="toggleFaq(index)">
+          <button class="faq-question" @click="toggleFaq(index)">
+            <span class="faq-number">0{{ index + 1 }}</span>
             <h4>{{ faq.question }}</h4>
-            <span>+</span>
-          </div>
+            <span class="faq-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 5v14m-7-7h14" v-if="!isOpen(index)" />
+                <path d="M5 12h14" v-else />
+              </svg>
+            </span>
+          </button>
           <div class="faq-answer">
             <p>{{ faq.answer }}</p>
           </div>
@@ -68,57 +76,107 @@ const isOpen = (index: number) => openItems.value.has(index)
 </template>
 
 <style scoped>
+#faq {
+  background:
+    radial-gradient(ellipse at 20% 80%, var(--accent-dim) 0%, transparent 40%),
+    var(--black);
+}
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--space-sm);
+}
+
 .faq-list {
   max-width: 800px;
   margin: 0 auto;
 }
 
 .faq-item {
-  background: var(--dark);
-  border-radius: 10px;
-  margin-bottom: 15px;
+  border: 1px solid var(--border);
+  margin-bottom: var(--space-sm);
   overflow: hidden;
+  transition: border-color 0.3s var(--ease-out-expo);
+}
+
+.faq-item:hover,
+.faq-item.active {
+  border-color: var(--accent);
 }
 
 .faq-question {
-  padding: 25px;
+  width: 100%;
+  padding: var(--space-md);
   cursor: pointer;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  transition: background 0.3s ease;
+  gap: var(--space-md);
+  background: var(--dark);
+  border: none;
+  text-align: left;
+  transition: background 0.3s var(--ease-out-expo);
 }
 
 .faq-question:hover {
   background: var(--darker);
 }
 
-.faq-question h4 {
-  font-size: 1rem;
+.faq-number {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.2rem;
+  color: var(--text-subtle);
+  min-width: 30px;
 }
 
-.faq-question span {
+.faq-item.active .faq-number {
   color: var(--accent);
-  font-size: 1.5rem;
-  transition: transform 0.3s ease;
 }
 
-.faq-item.active .faq-question span {
-  transform: rotate(45deg);
+.faq-question h4 {
+  flex: 1;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  text-transform: none;
+}
+
+.faq-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--text-muted);
+  transition: color 0.3s var(--ease-out-expo);
+}
+
+.faq-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.faq-item.active .faq-icon {
+  color: var(--accent);
 }
 
 .faq-answer {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease;
+  transition: max-height 0.4s var(--ease-out-expo);
 }
 
 .faq-item.active .faq-answer {
-  max-height: 200px;
+  max-height: 300px;
 }
 
 .faq-answer p {
-  padding: 0 25px 25px;
+  padding: 0 var(--space-md) var(--space-md);
+  padding-left: calc(var(--space-md) + 30px + var(--space-md));
   color: var(--text-muted);
+  line-height: 1.8;
+  font-size: 0.9rem;
 }
 </style>
