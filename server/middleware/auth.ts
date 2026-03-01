@@ -6,9 +6,9 @@ export default defineEventHandler((event) => {
     return
   }
 
-  // Allow access to the password page and its API
+  // Allow access to the password page, consent form, and their APIs
   const path = getRequestURL(event).pathname
-  if (path === '/password' || path === '/api/auth') {
+  if (path === '/password' || path === '/api/auth' || path === '/consent' || path === '/api/consent') {
     return
   }
 
