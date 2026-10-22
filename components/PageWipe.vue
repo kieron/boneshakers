@@ -25,7 +25,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div v-if="active" :key="run" class="wipe" aria-hidden="true">
-    <div class="panel">
+    <div class="wipe-panel">
       <div class="roller">
         <img src="/skull-logo.svg" alt="" width="120" height="132" />
       </div>
@@ -42,7 +42,7 @@ onBeforeUnmount(() => {
   overflow: hidden;
 }
 
-.panel {
+.wipe-panel {
   position: absolute;
   inset: 0;
   background: var(--slate);
