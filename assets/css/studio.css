@@ -1,0 +1,318 @@
+/* Studio design system — see docs/design-spec.md.
+   Scoped to body.studio so /password and /consent keep their legacy styles (main.css). */
+
+:root {
+  --ink: #0a0a0a;
+  --bone: #f2efe8;
+  --navy: #03032b;
+  --sage: #74766b;
+  /* Studio grey lifted to pass AA as small text on navy (#74766b is ~4.3:1) */
+  --sage-text: #8d8f83;
+  --slate: #43546c;
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Space Mono', monospace;
+
+  --ease-wobble: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --measure: 65ch;
+}
+
+body.studio {
+  background-color: var(--navy);
+  color: var(--bone);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+
+body.studio::before {
+  opacity: 0.045;
+}
+
+.studio a {
+  color: inherit;
+}
+
+.studio a:hover {
+  color: inherit;
+}
+
+.studio :focus-visible {
+  outline: 2px solid var(--bone);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px var(--slate);
+}
+
+.studio h1,
+.studio h2,
+.studio h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.95;
+}
+
+/* Inner page template */
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 7rem var(--gutter) 6rem;
+}
+
+.page-hero {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.display-title {
+  font-size: clamp(56px, 12vw, 96px);
+}
+
+.page-intro {
+  max-width: 52ch;
+  color: var(--sage-text);
+}
+
+.section {
+  margin-top: 4.5rem;
+}
+
+.section-title {
+  font-size: clamp(28px, 5vw, 40px);
+  margin-bottom: 1.25rem;
+}
+
+.prose p + p {
+  margin-top: 1rem;
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--sage-text);
+}
+
+.rule {
+  border: 0;
+  border-top: 1px solid var(--sage);
+  opacity: 0.5;
+}
+
+.text-link {
+  text-decoration: underline;
+  text-decoration-color: var(--slate);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.text-link:hover {
+  text-decoration-color: var(--bone);
+}
+
+/* Buttons: slate fill, bone text, sticker-peel tilt */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.6rem;
+  background: var(--slate);
+  color: var(--bone);
+  border: 2px solid var(--bone);
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 120ms var(--ease-out), box-shadow 120ms var(--ease-out);
+}
+
+.button:hover {
+  transform: rotate(-2deg) translateY(-2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
+.button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.button[disabled] {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.button-quiet {
+  background: transparent;
+}
+
+/* Numbered steps */
+.steps {
+  list-style: none;
+  counter-reset: step;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.steps li {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0.25rem 1rem;
+}
+
+.steps li::before {
+  content: counter(step, decimal-leading-zero);
+  grid-row: span 2;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--sage-text);
+}
+
+.steps strong {
+  font-weight: 700;
+}
+
+/* Disclosure FAQ */
+.faq {
+  border-top: 1px solid rgba(116, 118, 107, 0.5);
+}
+
+.faq details {
+  border-bottom: 1px solid rgba(116, 118, 107, 0.5);
+}
+
+.faq summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1rem 2rem 1rem 0;
+  position: relative;
+  font-weight: 700;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::after {
+  content: '+';
+  position: absolute;
+  right: 0.25rem;
+  top: 0.9rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.faq details[open] summary::after {
+  content: '–';
+}
+
+.faq details p {
+  padding-bottom: 1.25rem;
+  color: var(--sage-text);
+  max-width: var(--measure);
+}
+
+/* Scroll reveal (v-reveal). Content is visible without JS: the directive adds .reveal-armed. */
+.reveal-armed {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 400ms var(--ease-out), transform 400ms var(--ease-out);
+}
+
+.reveal-armed.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Visually hidden */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Page wipe transition: content swaps while the wipe covers the screen */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 250ms ease;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+}
+
+@media (max-width: 640px) {
+  body.studio {
+    font-size: 14px;
+  }
+
+  .page {
+    padding-top: 6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-armed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .button,
+  .button:hover,
+  .button:active {
+    transform: none;
+    transition: background-color 120ms linear;
+  }
+
+  .button:hover {
+    background: var(--ink);
+  }
+}
+
+/* Home opening sequence (pages/index.vue): grain fades in, menu and footer arrive last */
+html[data-intro='play'] body.studio::before {
+  animation: intro-grain 400ms ease-out both;
+}
+
+html[data-intro='play'] .site-header,
+html[data-intro='play'] .site-footer {
+  animation: intro-fade 400ms ease-out 2400ms both;
+}
+
+html[data-intro='fade'] .site-header,
+html[data-intro='fade'] .site-footer {
+  animation: intro-fade 300ms ease-out both;
+}
+
+@keyframes intro-grain {
+  from { opacity: 0; }
+}
+
+@keyframes intro-fade {
+  from { opacity: 0; }
+}

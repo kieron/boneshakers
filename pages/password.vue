@@ -1,4 +1,7 @@
 <script setup lang="ts">
+// Legacy styling (main.css), outside the studio layout
+definePageMeta({ layout: false })
+
 const password = ref('')
 const error = ref('')
 const loading = ref(false)

@@ -1,6 +1,6 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
-  const { name, email, phone, service, message } = body
+  const { name, email, phone, service, artist, piercing, message } = body
 
   // Validate required fields
   if (!name || !email) {
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
   // If env vars not configured, log and return success (for development)
   if (!resendApiKey || !emailTo) {
-    console.log('Email not configured - enquiry received:', { name, email, phone, service, message })
+    console.log('Email not configured - enquiry received:', { name, email, phone, service, artist, piercing, message })
     return { success: true, demo: true }
   }
 
@@ -40,11 +40,13 @@ export default defineEventHandler(async (event) => {
 
   // Build the email HTML
   const emailHtml = `
-    <h2>New ${serviceName} Enquiry</h2>
+    <h2>New ${escapeHtml(serviceName)} Enquiry</h2>
     <p><strong>Name:</strong> ${escapeHtml(name)}</p>
     <p><strong>Email:</strong> ${escapeHtml(email)}</p>
     ${phone ? `<p><strong>Phone:</strong> ${escapeHtml(phone)}</p>` : ''}
-    <p><strong>Service:</strong> ${serviceName}</p>
+    <p><strong>Service:</strong> ${escapeHtml(serviceName)}</p>
+    ${artist ? `<p><strong>Artist:</strong> ${escapeHtml(artist)}</p>` : ''}
+    ${piercing ? `<p><strong>Piercing:</strong> ${escapeHtml(piercing)}</p>` : ''}
     ${message ? `<p><strong>Message:</strong></p><p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>` : ''}
     <hr>
     <p style="color: #888; font-size: 12px;">This enquiry was submitted via the Boneshakers website.</p>
@@ -79,7 +81,7 @@ export default defineEventHandler(async (event) => {
 })
 
 // Helper function to escape HTML
-function escapeHtml(text: string): string {
+function escapeHtml(text: unknown): string {
   const map: Record<string, string> = {
     '&': '&amp;',
     '<': '&lt;',
@@ -87,5 +89,5 @@ function escapeHtml(text: string): string {
     '"': '&quot;',
     "'": '&#039;'
   }
-  return text.replace(/[&<>"']/g, (m) => map[m])
+  return String(text).replace(/[&<>"']/g, (m) => map[m])
 }
