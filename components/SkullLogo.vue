@@ -1,6 +1,8 @@
 <script setup lang="ts">
-// Stand-in for the studio's skull mark, drawn in layers (sticker, cranium, eyes,
-// glints, jaw) so the final artwork can replace it with the same animation hooks.
+// The studio's own skull mark (assets/art/skull-logo.ts). Layers: sticker edge,
+// dark mouth, upper skull, hinged jaw, and eyes that glance and blink.
+import { SKULL_EYES, SKULL_INK, SKULL_SILHOUETTE } from '~/assets/art/skull-logo'
+
 const props = withDefaults(defineProps<{
   track?: boolean
   blink?: boolean
@@ -15,12 +17,18 @@ const props = withDefaults(defineProps<{
   title: 'Boneshakers skull'
 })
 
+const uid = useId()
+const upperClip = `skull-upper-${uid}`
+const jawClip = `skull-jaw-${uid}`
+
+// Mouth line in the traced artwork; the jaw hinges just below it at the back of the skull
+const MOUTH_Y = 600
+const MAX_GLANCE = 16
+
 const root = ref<SVGSVGElement | null>(null)
-const glint = reactive({ x: 0, y: 0 })
+const glance = reactive({ x: 0, y: 0 })
 const blinking = ref(false)
 const rattling = ref(false)
-
-const MAX_GLINT = 7
 
 let frame = 0
 let blinkTimer: ReturnType<typeof setTimeout> | undefined
@@ -30,12 +38,12 @@ const cleanups: (() => void)[] = []
 const aimAt = (clientX: number, clientY: number) => {
   if (!root.value) return
   const box = root.value.getBoundingClientRect()
-  const dx = clientX - (box.left + box.width / 2)
-  const dy = clientY - (box.top + box.height * 0.45)
+  const dx = clientX - (box.left + box.width * 0.6)
+  const dy = clientY - (box.top + box.height * 0.48)
   const distance = Math.hypot(dx, dy) || 1
-  const reach = Math.min(distance / 240, 1)
-  glint.x = (dx / distance) * MAX_GLINT * reach
-  glint.y = (dy / distance) * MAX_GLINT * reach
+  const reach = Math.min(distance / 260, 1)
+  glance.x = (dx / distance) * MAX_GLANCE * reach
+  glance.y = (dy / distance) * MAX_GLANCE * reach
 }
 
 const scheduleBlink = () => {
@@ -66,8 +74,8 @@ onMounted(() => {
     }
     const onTilt = (event: DeviceOrientationEvent) => {
       if (event.gamma == null || event.beta == null) return
-      glint.x = Math.max(-1, Math.min(1, event.gamma / 30)) * MAX_GLINT
-      glint.y = Math.max(-1, Math.min(1, (event.beta - 45) / 30)) * MAX_GLINT
+      glance.x = Math.max(-1, Math.min(1, event.gamma / 30)) * MAX_GLANCE
+      glance.y = Math.max(-1, Math.min(1, (event.beta - 45) / 30)) * MAX_GLANCE
     }
     window.addEventListener('pointermove', onPointer, { passive: true })
     window.addEventListener('deviceorientation', onTilt, { passive: true })
@@ -85,9 +93,6 @@ onBeforeUnmount(() => {
   clearTimeout(rattleTimer)
   cleanups.forEach(fn => fn())
 })
-
-const CRANIUM = 'M100 8C150 8 192 44 192 98C192 128 180 148 162 160L160 186L40 186L38 160C20 148 8 128 8 98C8 44 50 8 100 8Z'
-const JAW = 'M40 186H160V196C160 208 151 216 139 216H61C49 216 40 208 40 196Z'
 </script>
 
 <template>
@@ -95,40 +100,34 @@ const JAW = 'M40 186H160V196C160 208 151 216 139 216H61C49 216 40 208 40 196Z'
     ref="root"
     class="skull"
     :class="{ 'is-blinking': blinking, 'is-chattering': chatter || rattling, 'is-rattling': rattling, 'is-interactive': interactive }"
-    viewBox="-16 -16 232 252"
+    viewBox="-40 -40 800 880"
     role="img"
     :aria-label="title"
-    :style="{ '--gx': `${glint.x}px`, '--gy': `${glint.y}px` }"
+    :style="{ '--gx': `${glance.x}px`, '--gy': `${glance.y}px` }"
     @click="rattle"
   >
+    <defs>
+      <clipPath :id="upperClip"><rect x="-40" y="-40" width="800" :height="MOUTH_Y + 42" /></clipPath>
+      <clipPath :id="jawClip"><rect x="-40" :y="MOUTH_Y" width="800" height="280" /></clipPath>
+    </defs>
+
     <g class="skull-body">
-      <!-- Sticker backing: a bone border so the ink outline reads on navy -->
-      <path :d="CRANIUM" class="sticker" />
-      <g class="jaw">
-        <path :d="JAW" class="sticker" />
+      <path :d="SKULL_SILHOUETTE" class="sticker" />
+      <path :d="SKULL_SILHOUETTE" class="mouth" />
+
+      <g class="jaw" :clip-path="`url(#${jawClip})`">
+        <path :d="SKULL_SILHOUETTE" class="bone" />
+        <path :d="SKULL_INK" class="ink" />
       </g>
 
-      <path :d="CRANIUM" class="bone" />
-      <path d="M44 150C50 160 56 165 64 168M156 150C150 160 144 165 136 168" class="crease" />
-
-      <g class="jaw">
-        <path :d="JAW" class="bone" />
-        <path d="M76 186V211M93 186V214M110 186V214M127 186V211" class="teeth" />
+      <g :clip-path="`url(#${upperClip})`">
+        <path :d="SKULL_SILHOUETTE" class="bone" />
+        <path :d="SKULL_INK" class="ink" />
       </g>
 
-      <g class="sockets">
-        <ellipse cx="66" cy="104" rx="30" ry="33" class="ink" />
-        <ellipse cx="136" cy="104" rx="30" ry="33" class="ink" />
+      <g class="eyes">
+        <path :d="SKULL_EYES" class="ink eyes-shape" />
       </g>
-
-      <g class="glints">
-        <circle cx="57" cy="94" r="10" />
-        <circle cx="74" cy="118" r="4.5" />
-        <circle cx="127" cy="94" r="10" />
-        <circle cx="144" cy="118" r="4.5" />
-      </g>
-
-      <path d="M101 166C92 158 87 150 90 144C93 139 99 140 101 145C103 140 109 139 112 144C115 150 110 158 101 166Z" class="ink" />
     </g>
   </svg>
 </template>
@@ -148,65 +147,51 @@ const JAW = 'M40 186H160V196C160 208 151 216 139 216H61C49 216 40 208 40 196Z'
 .sticker {
   fill: var(--bone);
   stroke: var(--bone);
-  stroke-width: 26;
+  stroke-width: 64;
   stroke-linejoin: round;
 }
 
-.bone {
-  fill: var(--bone);
-  stroke: var(--ink);
-  stroke-width: 8;
-  stroke-linejoin: round;
-}
+.mouth { fill: var(--ink); }
+.bone { fill: var(--bone); }
 
 .ink {
   fill: var(--ink);
+  fill-rule: evenodd;
 }
 
-.crease,
-.teeth {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 6;
-  stroke-linecap: round;
-}
-
-.glints {
-  fill: var(--bone);
+.eyes {
   transform: translate(var(--gx, 0), var(--gy, 0));
-  transition: transform 120ms linear;
+  transition: transform 140ms linear;
 }
 
-.sockets ellipse,
-.glints circle {
+.eyes-shape {
   transform-box: fill-box;
   transform-origin: center;
   transition: transform 90ms ease-in;
 }
 
-.is-blinking .sockets ellipse {
-  transform: scaleY(0.12);
+.is-blinking .eyes-shape {
+  transform: scaleY(0.1);
 }
 
-.is-blinking .glints circle {
-  transform: scaleY(0);
+.skull-body,
+.jaw {
+  transform-box: view-box;
 }
 
-.skull-body {
-  transform-box: fill-box;
-  transform-origin: 50% 85%;
-}
+.skull-body { transform-origin: 380px 760px; }
+.jaw { transform-origin: 150px 600px; }
 
 .is-rattling .skull-body {
   animation: skull-rattle 700ms var(--ease-wobble);
 }
 
 .is-chattering .jaw {
-  animation: jaw-chatter 140ms steps(2) 5;
+  animation: jaw-chatter 150ms steps(2) 5;
 }
 
 @keyframes jaw-chatter {
-  50% { transform: translateY(7px); }
+  50% { transform: rotate(6deg); }
 }
 
 @keyframes skull-rattle {
@@ -217,9 +202,8 @@ const JAW = 'M40 186H160V196C160 208 151 216 139 216H61C49 216 40 208 40 196Z'
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .glints,
-  .sockets ellipse,
-  .glints circle {
+  .eyes,
+  .eyes-shape {
     transition: none;
   }
 

@@ -26,7 +26,7 @@ const wave = ref(0)
       </li>
     </ul>
 
-    <p v-reveal class="follow">
+    <p v-reveal class="follow panel">
       <template v-if="studio.instagram">
         Follow us on <a :href="studio.instagram" class="text-link" target="_blank" rel="noopener">Instagram</a> to hear when the shop opens.
       </template>
@@ -55,13 +55,23 @@ const wave = ref(0)
   background: var(--bone);
   color: var(--ink);
   border: 2px solid var(--ink);
-  box-shadow: 4px 4px 0 var(--ink);
+  box-shadow: 6px 6px 0 var(--sage);
   scroll-margin-top: 6rem;
   transition: transform 150ms var(--ease-out);
 }
 
 .tile:hover {
   transform: rotate(-1.5deg) translateY(-4px);
+}
+
+.tile:nth-child(2) {
+  background: var(--slate);
+  color: var(--bone);
+  box-shadow: 6px 6px 0 var(--bone);
+}
+
+.tile:nth-child(2) .tile-soon {
+  color: #cfd4dc;
 }
 
 .tile-name {
@@ -81,9 +91,8 @@ const wave = ref(0)
 }
 
 .follow {
-  margin-top: 3rem;
+  margin-top: 3.5rem;
   text-align: center;
-  color: var(--sage-text);
 }
 
 @media (max-width: 640px) {

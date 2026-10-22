@@ -34,7 +34,7 @@ useHead({ title: 'Boneshakers Tattoo Studio' })
 <template>
   <section class="home">
     <h1 class="sr-only">Boneshakers tattoo and piercing studio</h1>
-    <div class="home-skull">
+    <div class="home-skull swatches">
       <div class="roll">
         <div class="wobble">
           <SkullLogo track blink interactive title="Boneshakers skull. Click it." />
@@ -72,7 +72,12 @@ html[data-intro='play'] .wobble {
 }
 
 html[data-intro='play'] .home-skull :deep(.jaw) {
-  animation: chatter 140ms steps(2) 1800ms 4;
+  animation: chatter 150ms steps(2) 1800ms 4;
+}
+
+html[data-intro='play'] .home-skull::before,
+html[data-intro='play'] .home-skull::after {
+  animation: swatch-pop 500ms var(--ease-wobble) 1500ms both;
 }
 
 html[data-intro='fade'] .home-skull {
@@ -95,7 +100,11 @@ html[data-intro='fade'] .home-skull {
 }
 
 @keyframes chatter {
-  50% { transform: translateY(7px); }
+  50% { transform: rotate(6deg); }
+}
+
+@keyframes swatch-pop {
+  from { transform: scale(0); }
 }
 
 @keyframes fade-in {

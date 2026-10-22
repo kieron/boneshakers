@@ -156,7 +156,7 @@ onBeforeUnmount(() => {
   position: fixed;
   inset: 0;
   z-index: 1;
-  background: var(--navy);
+  background: var(--slate);
   display: grid;
   place-items: center;
 }
@@ -177,7 +177,7 @@ onBeforeUnmount(() => {
 }
 
 .mobile-menu a.is-active {
-  background: var(--slate);
+  background: var(--navy);
 }
 
 @media (max-width: 760px) {

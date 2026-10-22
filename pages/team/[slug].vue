@@ -38,7 +38,7 @@ const bookingLink = `/enquire?service=${artist.bookingService}&artist=${artist.s
       <NuxtLink :to="bookingLink" class="button">Book with {{ artist.name }}</NuxtLink>
     </div>
 
-    <section v-reveal class="section prose">
+    <section v-reveal class="section panel">
       <h2 class="section-title">About {{ artist.name }}</h2>
       <p>{{ artist.bio }}</p>
     </section>
@@ -91,6 +91,7 @@ const bookingLink = `/enquire?service=${artist.bookingService}&artist=${artist.s
   filter: grayscale(1) contrast(1.15);
   border: 3px solid var(--ink);
   outline: 8px solid var(--bone);
+  box-shadow: 18px 18px 0 6px var(--slate), -14px -10px 0 4px var(--sage);
   transform: rotate(-2deg);
   margin-bottom: 1rem;
 }

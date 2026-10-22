@@ -63,7 +63,8 @@ before launch.
 **Rules**
 
 - Navy is the default background, with a light film-grain texture at 3–5% opacity, as in the lightning-eyes reference.
-- Slate is the only accent. Use it sparingly, for one thing per screen that you can click or that is active. Use it as a fill or underline with bone text on top, never as text on navy (about 2.5:1 contrast).
+- Slate is the only colour for interactive things (buttons, active menu item, links). Use it as a fill or underline with bone text on top, never as text on navy (about 2.5:1 contrast).
+- Slate and grey also appear as colour fields, echoing the moodboard swatches: overlapping flat circles behind each page's focal illustration, one slate panel per page, and palette-coloured card shadows, tags and doodles. *(Added 2026-10-22 at the studio's request for more of their palette.)*
 - Bone white text on navy is the main pairing. Grey text on navy is only for small labels and must pass WCAG AA at its size.
 - The illustrations stay black and white. Any colour comes from the background behind them.
 
@@ -95,6 +96,7 @@ and dependable; the mascot moves around and misbehaves.
 
 **Skull logo**
 
+- The studio's own skull (three-quarter view, from the moodboard) is the logo. Hand-drawn front-facing skulls can appear as extra artwork (doodles, the mascot's head, small moments like the enquiry confirmation) but never replace it.
 - Appears on the home page (large and centred), in the loader, as the favicon, and in the footer.
 - Idle behaviour on the home page: the eyes follow the cursor (or tilt with the phone on mobile), with a slow blink every 6–10 seconds.
 - Clicking the skull plays a short rattle or jaw-chatter, then it settles.
@@ -261,10 +263,16 @@ Decisions made while building to this spec. Keep these in step with the code.
 - **Focus rings** are bone with a slate halo, because slate alone is under the
   3:1 non-text contrast minimum on navy.
 - **Wordmark**: small and top left on every page (the "pick one" choice above).
-- **Illustrations**: `components/SkullLogo.vue` and `components/MascotSkeleton.vue`
-  are hand-drawn SVG stand-ins in the moodboard's style, built in separate layers
-  (eyes, glints, jaw, arms, props) so the artist's final layered SVGs can replace
-  them without touching the pages.
+- **Skull logo**: `components/SkullLogo.vue` renders the studio's skull, traced
+  from the moodboard into `assets/art/skull-logo.ts` (silhouette, ink and eye
+  layers). The eyes glance and blink; the jaw hinges open below the mouth line.
+  `public/skull-logo.svg` (also the favicon) is the static version used in the
+  footer and page wipe. Swap the paths for the original vector file when we get it.
+- **Extra skulls and mascot**: `components/SkullDoodle.vue` (front-facing skull)
+  and `components/MascotSkeleton.vue` are hand-drawn stand-ins in the moodboard's
+  style, built in layers so the artist's final SVGs can replace them.
+- **Palette fields**: `.swatches` (circles behind the focal illustration) and
+  `.panel` (slate section; re-tunes muted text for contrast) in `studio.css`.
 - **Content** (artists, prices, hours, FAQs) lives in `utils/studio.ts`. Values
   carried over from the previous build are placeholders: the address, phone
   number and social links still need real values, and empty social links are

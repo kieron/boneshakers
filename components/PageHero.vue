@@ -4,7 +4,7 @@ defineProps<{ title: string, intro?: string }>()
 
 <template>
   <div class="page-hero">
-    <div class="hero-mascot">
+    <div class="hero-mascot swatches">
       <slot name="mascot" />
     </div>
     <h1 class="display-title">{{ title }}</h1>
@@ -16,5 +16,6 @@ defineProps<{ title: string, intro?: string }>()
 <style scoped>
 .hero-mascot {
   width: clamp(150px, 26vw, 210px);
+  margin: 1rem 0 0.5rem;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <footer class="site-footer">
     <NuxtLink to="/" class="footer-skull" aria-label="Boneshakers, home">
-      <SkullLogo title="" aria-hidden="true" />
+      <img src="/skull-logo.svg" alt="" width="24" height="26" />
     </NuxtLink>
     <span>{{ studio.address }}</span>
     <span>{{ studio.hours }}</span>
@@ -29,7 +29,9 @@
   color: var(--bone);
 }
 
-.footer-skull {
-  width: 22px;
+.footer-skull img {
+  display: block;
+  width: 24px;
+  height: auto;
 }
 </style>

@@ -27,7 +27,7 @@ onBeforeUnmount(() => {
   <div v-if="active" :key="run" class="wipe" aria-hidden="true">
     <div class="panel">
       <div class="roller">
-        <SkullLogo title="" />
+        <img src="/skull-logo.svg" alt="" width="120" height="132" />
       </div>
     </div>
   </div>
@@ -45,7 +45,7 @@ onBeforeUnmount(() => {
 .panel {
   position: absolute;
   inset: 0;
-  background: var(--navy);
+  background: var(--slate);
   animation: sweep 500ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
@@ -56,6 +56,12 @@ onBeforeUnmount(() => {
   width: 120px;
   margin-top: -60px;
   animation: roll 500ms linear forwards;
+}
+
+.roller img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 @keyframes sweep {

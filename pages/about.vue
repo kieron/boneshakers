@@ -27,7 +27,7 @@ const directions = `https://www.google.com/maps/search/?api=1&query=${encodeURIC
       </ul>
     </section>
 
-    <section v-reveal class="section">
+    <section v-reveal class="section panel">
       <h2 class="section-title">Find us</h2>
       <div class="visit">
         <div>

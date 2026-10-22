@@ -12,7 +12,7 @@ const buzz = ref(0)
       <NuxtLink to="/enquire?service=tattoo" class="button" @mouseenter="buzz++" @focus="buzz++">Book a tattoo</NuxtLink>
     </PageHero>
 
-    <section v-reveal class="section">
+    <section v-reveal class="section panel">
       <h2 class="section-title">How booking works</h2>
       <ol class="steps">
         <li v-for="item in bookingSteps" :key="item.title">

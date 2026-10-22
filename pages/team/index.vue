@@ -24,7 +24,7 @@ const flash = ref(0)
       </li>
     </ul>
 
-    <p v-reveal class="guest-note">
+    <p v-reveal class="guest-note panel">
       We regularly host guest artists. Follow the studio for announcements, or
       <NuxtLink to="/enquire?service=tattoo" class="text-link">ask about upcoming guest spots</NuxtLink>.
     </p>
@@ -46,14 +46,14 @@ const flash = ref(0)
   background: var(--bone);
   color: var(--ink);
   border: 2px solid var(--ink);
-  box-shadow: 4px 4px 0 var(--ink);
+  box-shadow: 6px 6px 0 var(--slate);
   transition: transform 150ms var(--ease-out), box-shadow 150ms var(--ease-out);
 }
 
 .studio .artist-card:hover {
   color: var(--ink);
   transform: translateY(-6px) rotate(-1deg);
-  box-shadow: 8px 10px 0 var(--ink);
+  box-shadow: 10px 12px 0 var(--sage);
 }
 
 .artist-card img {
@@ -92,12 +92,13 @@ const flash = ref(0)
   padding: 0.1rem 0.55rem;
   border: 1.5px solid var(--ink);
   border-radius: 999px;
+  background: var(--slate);
+  color: var(--bone);
 }
 
 .guest-note {
-  margin-top: 3rem;
+  margin-top: 3.5rem;
   text-align: center;
-  color: var(--sage-text);
 }
 
 @media (max-width: 560px) {

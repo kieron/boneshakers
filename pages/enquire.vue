@@ -61,7 +61,7 @@ const submit = async () => {
     </div>
 
     <div v-if="status === 'success'" class="sent" role="status">
-      <div class="sent-skull"><SkullLogo title="" /></div>
+      <div class="sent-skull"><SkullDoodle title="Happy skull" /></div>
       <p>Got it. We'll be in touch soon.</p>
       <NuxtLink to="/" class="text-link">Back home</NuxtLink>
     </div>

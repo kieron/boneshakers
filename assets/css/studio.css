@@ -316,3 +316,85 @@ html[data-intro='fade'] .site-footer {
 @keyframes intro-fade {
   from { opacity: 0; }
 }
+
+/* Palette fields — the moodboard swatches as flat overlapping circles behind the
+   focal illustration, plus one slate panel per page. Slate stays the only colour
+   for interactive elements. */
+.swatches {
+  position: relative;
+  isolation: isolate;
+}
+
+.swatches::before,
+.swatches::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  animation: swatch-float 9s ease-in-out infinite;
+}
+
+.swatches::before {
+  width: 112%;
+  aspect-ratio: 1;
+  left: -6%;
+  top: 50%;
+  margin-top: -56%;
+  background: var(--slate);
+}
+
+.swatches::after {
+  width: 46%;
+  aspect-ratio: 1;
+  right: -18%;
+  bottom: -8%;
+  background: var(--sage);
+  animation-delay: -4.5s;
+}
+
+@keyframes swatch-float {
+  50% { transform: translate(4px, -6px); }
+}
+
+.panel {
+  /* Muted text and accents re-tuned for contrast on slate */
+  --sage-text: #cfd4dc;
+  background: var(--slate);
+  color: var(--bone);
+  border-radius: 28px;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  box-shadow: 8px 8px 0 var(--sage);
+}
+
+.panel .text-link {
+  text-decoration-color: var(--bone);
+}
+
+.panel .text-link:hover {
+  text-decoration-color: var(--sage);
+}
+
+.panel .button {
+  background: var(--navy);
+}
+
+.panel .section-title::after {
+  background: var(--bone);
+}
+
+.section-title::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 5px;
+  margin-top: 0.6rem;
+  border-radius: 3px;
+  background: var(--sage);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swatches::before,
+  .swatches::after {
+    animation: none;
+  }
+}

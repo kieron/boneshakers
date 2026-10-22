@@ -12,7 +12,7 @@ const flinch = ref(0)
       <NuxtLink to="/enquire?service=piercing" class="button">Book a piercing</NuxtLink>
     </PageHero>
 
-    <section v-reveal class="section">
+    <section v-reveal class="section panel">
       <h2 class="section-title">Price list</h2>
       <table class="prices">
         <thead>
@@ -83,7 +83,7 @@ const flinch = ref(0)
 }
 
 .prices tbody tr:hover {
-  background: rgba(67, 84, 108, 0.35);
+  background: rgba(3, 3, 43, 0.35);
 }
 
 .promises {
