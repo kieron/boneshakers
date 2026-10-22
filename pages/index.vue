@@ -50,7 +50,7 @@ useHead({ title: 'Boneshakers Tattoo Studio' })
   min-height: calc(100svh - 5rem);
   display: grid;
   place-items: center;
-  padding: 5rem var(--gutter) 0;
+  padding: 6rem var(--gutter) 0;
 }
 
 .home-skull {

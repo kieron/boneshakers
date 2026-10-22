@@ -1,6 +1,11 @@
 <script setup lang="ts">
 const route = useRoute()
 const open = ref(false)
+const scrolled = ref(false)
+
+const onScroll = () => {
+  scrolled.value = window.scrollY > 24
+}
 
 const isActive = (to: string) => route.path === to || route.path.startsWith(`${to}/`)
 
@@ -14,16 +19,24 @@ const onKey = (event: KeyboardEvent) => {
   if (event.key === 'Escape') open.value = false
 }
 
-onMounted(() => window.addEventListener('keydown', onKey))
+onMounted(() => {
+  window.addEventListener('keydown', onKey)
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onScroll()
+})
 onBeforeUnmount(() => {
   window.removeEventListener('keydown', onKey)
+  window.removeEventListener('scroll', onScroll)
   document.documentElement.style.overflow = ''
 })
 </script>
 
 <template>
-  <header class="site-header">
-    <NuxtLink to="/" class="wordmark" aria-label="Boneshakers, home">Boneshakers</NuxtLink>
+  <header class="site-header" :class="{ 'is-scrolled': scrolled && !open }">
+    <NuxtLink to="/" class="wordmark" aria-label="Boneshakers, home">
+      <img src="/skull-logo.svg" alt="" width="36" height="40" />
+      <span>Boneshakers</span>
+    </NuxtLink>
 
     <nav class="menu" aria-label="Main">
       <ul>
@@ -77,11 +90,21 @@ onBeforeUnmount(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem var(--gutter);
-  font-size: 12px;
+  padding: 1.25rem var(--gutter);
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.3vw, 30px);
+  line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.06em;
   pointer-events: none;
+  transition: background-color 200ms ease, box-shadow 200ms ease, padding 200ms ease;
+}
+
+.site-header.is-scrolled {
+  background: var(--navy);
+  box-shadow: 0 4px 0 var(--slate);
+  padding-top: 0.85rem;
+  padding-bottom: 0.85rem;
 }
 
 .site-header > * {
@@ -89,13 +112,27 @@ onBeforeUnmount(() => {
 }
 
 .wordmark {
-  font-weight: 700;
-  letter-spacing: 0.25em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.15em;
+  letter-spacing: 0.1em;
+}
+
+.wordmark img {
+  display: block;
+  width: 1.45em;
+  height: auto;
+  transition: transform 300ms var(--ease-wobble);
+}
+
+.wordmark:hover img {
+  transform: rotate(-12deg) scale(1.08);
 }
 
 .menu ul {
   display: flex;
-  gap: 1.75rem;
+  gap: clamp(1.25rem, 2.6vw, 2.5rem);
   list-style: none;
 }
 
@@ -110,15 +147,22 @@ onBeforeUnmount(() => {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -2px;
-  height: 3px;
+  bottom: -3px;
+  height: 5px;
+  border-radius: 3px;
   background: var(--slate);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 150ms var(--ease-out);
 }
 
+.menu-link:hover::after {
+  background: var(--sage);
+  transform: scaleX(1);
+}
+
 .menu-link.is-active::after {
+  background: var(--slate);
   transform: scaleX(1);
 }
 
@@ -133,8 +177,8 @@ onBeforeUnmount(() => {
 
 @keyframes jitter {
   0% { transform: translate(0, 0); }
-  33% { transform: translate(1px, -2px); }
-  66% { transform: translate(-1px, 1px); }
+  33% { transform: translate(1px, -2px) rotate(-3deg); }
+  66% { transform: translate(-1px, 1px) rotate(2deg); }
   100% { transform: translate(0, 0); }
 }
 
@@ -180,7 +224,7 @@ onBeforeUnmount(() => {
   background: var(--navy);
 }
 
-@media (max-width: 760px) {
+@media (max-width: 920px) {
   .menu {
     display: none;
   }
@@ -195,7 +239,7 @@ onBeforeUnmount(() => {
   }
 }
 
-@media (min-width: 761px) {
+@media (min-width: 921px) {
   .mobile-menu {
     display: none !important;
   }
@@ -206,8 +250,13 @@ onBeforeUnmount(() => {
     animation: none;
   }
 
-  .menu-link::after {
+  .menu-link::after,
+  .site-header {
     transition: none;
+  }
+
+  .wordmark:hover img {
+    transform: none;
   }
 
   .menu-link:hover {

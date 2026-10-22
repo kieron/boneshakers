@@ -78,7 +78,7 @@ else. The mono echoes the moodboard's own lettering.
 | --- | --- | --- | --- |
 | Display | Bebas Neue (already loaded) or a heavier outlined face like the "Explore the Space" title | 96 / 56 px | Page titles only, uppercase, one per page |
 | Heading | Bebas Neue | 40 / 28 px | Section headings |
-| Menu | Space Mono, uppercase | 12 px, 0.15em tracking | Top-right menu, as small as the reference |
+| Menu | Bebas Neue, uppercase | 22–30 px (scales with width), 0.06em tracking | Top-right menu and wordmark. Enlarged from 12 px mono on 2026-10-22 so the menu is a feature |
 | Body | Space Mono | 15 / 14 px, 1.7 line height | Max 65 characters per line |
 | Label | Space Mono | 11 px | Prices, captions, form labels |
 
@@ -140,7 +140,7 @@ right. The opening animation gets the skull there in under 3 seconds.
 **Home page layout**
 
 - Skull centred, about 40% of the viewport height.
-- Menu top right: THE TEAM · ABOUT · TATTOOS · PIERCINGS · SHOP, in small uppercase mono.
+- Menu top right: THE TEAM · ABOUT · TATTOOS · PIERCINGS · SHOP, in the display face (see Typography). It gets a navy backing with a slate rule once the page scrolls.
 - Wordmark "BONESHAKERS" small and top left, or as a single line under the skull. Pick one during design.
 - Background: navy, grain, and an optional slow drifting layer of small doodles (stars, lightning bolts, daggers) at low opacity, like the moving background in the space reference.
 - Footer line at the bottom edge: address, Instagram, opening hours, all in 11 px grey.
@@ -262,7 +262,7 @@ Decisions made while building to this spec. Keep these in step with the code.
   `--sage-text` (#8D8F83, about 5.8:1); `--sage` itself is for rules and panels.
 - **Focus rings** are bone with a slate halo, because slate alone is under the
   3:1 non-text contrast minimum on navy.
-- **Wordmark**: small and top left on every page (the "pick one" choice above).
+- **Wordmark**: top left on every page with the skull mark beside it (the "pick one" choice above). The desktop menu collapses to MENU below 920 px.
 - **Skull logo**: `components/SkullLogo.vue` renders the studio's skull, traced
   from the moodboard into `assets/art/skull-logo.ts` (silhouette, ink and eye
   layers). The eyes glance and blink; the jaw hinges open below the mouth line.

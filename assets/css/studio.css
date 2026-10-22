@@ -61,7 +61,7 @@ body.studio::before {
 .page {
   max-width: 760px;
   margin: 0 auto;
-  padding: 7rem var(--gutter) 6rem;
+  padding: 8.5rem var(--gutter) 6rem;
 }
 
 .page-hero {
@@ -271,7 +271,7 @@ body.studio::before {
   }
 
   .page {
-    padding-top: 6rem;
+    padding-top: 7rem;
   }
 }
 
