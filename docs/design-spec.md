@@ -218,7 +218,7 @@ the visitor rather than running for its own sake.
 
 | Element | Behaviour | Timing |
 | --- | --- | --- |
-| Background doodles | Drift slowly with a slight parallax against the cursor or scroll | 40–60 s loop |
+| Background | Big flat slate/grey circles orbit slowly; ~28 doodles (stars, bolts, daggers, skulls, hearts, eyes, moons) drift, twinkle, flicker, beat, blink or rattle; they scatter from the cursor and parallax on scroll, wrapping so the field never empties; twinkling dots, an occasional shooting star, and shimmering grain | Orbits 60–85 s, drift 18–34 s, pulses 1.5–5 s |
 | Skull eyes | Follow the cursor; blink | Blink every 6–10 s |
 | Mascot | An idle loop (bob, tap foot) plus the page's reaction (see Characters) | Idle loop 2–4 s |
 | Menu items | The letters jitter by 1–2 px on hover; the active item sits on a slate underline | 150 ms |
@@ -271,6 +271,9 @@ Decisions made while building to this spec. Keep these in step with the code.
 - **Extra skulls and mascot**: `components/SkullDoodle.vue` (front-facing skull)
   and `components/MascotSkeleton.vue` are hand-drawn stand-ins in the moodboard's
   style, built in layers so the artist's final SVGs can replace them.
+- **Living background**: `components/DoodleField.vue` (seeded layout so server and
+  client match). Made livelier on 2026-10-22 at the studio's request. Reduced motion
+  freezes all of it.
 - **Palette fields**: `.swatches` (circles behind the focal illustration) and
   `.panel` (slate section; re-tunes muted text for contrast) in `studio.css`.
 - **Content** (artists, prices, hours, FAQs) lives in `utils/studio.ts`. Values
